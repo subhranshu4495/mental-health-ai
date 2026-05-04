@@ -349,6 +349,11 @@
             border-color: var(--warn-border);
         }
 
+        .bubble.action {
+            background: rgba(52, 211, 153, 0.07);
+            border-color: rgba(52, 211, 153, 0.25);
+        }
+
         .bubble strong {
             color: #fca5a5;
         }
@@ -714,8 +719,7 @@
                     <div class="avatar bot">💜</div>
                     <div class="bubble bot">
                         <div style="text-align:center;margin-bottom:8px;font-size:1.6rem">👋</div>
-                        Hello! I'm here to listen and offer support. You can share how you're feeling — there's no
-                        judgment here. What's on your mind today?
+                        Hey! I'm really glad you're here. This is a safe space — no judgment, just genuine support. I'm here to listen, and if you want, I can give you real things to try too. What's going on for you today?
                     </div>
                 </div>
             </div>
@@ -858,11 +862,14 @@
             avatar.textContent = sender === 'user' ? '🙂' : '💜';
 
             const extraClass = (type === 'crisis' || severity === 'crisis') ? ' crisis'
-                : (type === 'boundary') ? ' boundary' : '';
+                : (type === 'boundary') ? ' boundary'
+                : (type === 'action') ? ' action' : '';
 
             const bubble = document.createElement('div');
             bubble.className = `bubble ${sender}${extraClass}`;
-            bubble.innerHTML = (sender === 'bot' ? severityBadge(severity) : '') + html;
+            // Convert \n to <br> so numbered steps render properly
+            const formatted = (sender === 'bot') ? html.replace(/\n/g, '<br>') : html;
+            bubble.innerHTML = (sender === 'bot' ? severityBadge(severity) : '') + formatted;
 
             if (sender === 'user') { row.append(bubble, avatar); }
             else { row.append(avatar, bubble); }
